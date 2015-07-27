@@ -7,10 +7,9 @@ import (
 )
 
 func TestRender(t *testing.T) {
-	tpl, err := template.New("index.html").ParseFiles("./_testdata/index.html", "./_testdata/base.html")
-	if err != nil {
-		panic(err)
-	}
+	tpl := template.Must(
+		template.New("index.html").ParseGlob("_testdata/*.html"), //ParseFiles("./_testdata/index.html", "./_testdata/base.html")
+	)
 
 	data := map[string]string{
 		"Content": "What the fuck!",
