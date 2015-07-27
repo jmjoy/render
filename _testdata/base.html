@@ -1,0 +1,16 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    {{.template "head" .}}
+</head>
+<body>
+    {{template "body" .}}
+</body>
+{{.template "foot" .}}
+</html>
+{{.end}}
+
+
