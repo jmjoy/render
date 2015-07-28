@@ -2,7 +2,6 @@ package render_test
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"testing"
 
@@ -32,11 +31,11 @@ func TestRender(t *testing.T) {
 			"Content": "内容",
 		})
 
-		fmt.Println(buf.String())
+		if testdata1 != buf.String() {
+			t.Fatalf("Content not equal %q", v)
+		}
 
-		//if testdata1 != buf.String() {
-		//    t.Fatalf("Content not equal %q", v)
-		//}
+		_ = template.Must(d.GetTemplate("index1.html"))
 	}
 
 }
@@ -44,11 +43,10 @@ func TestRender(t *testing.T) {
 var testdata1 = `<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>标题</title>
+<meta charset="UTF-8">
+<title>标题</title>
 
-<link rel="stylesheet" href="hello.css" type="text/css" media="screen" charset="
-utf-8">
+<link rel="stylesheet" href="hello.css" type="text/css" media="screen" charset="utf-8">
 
 </head>
 <body>
@@ -59,7 +57,8 @@ utf-8">
 
 <script type="text/javascript" charset="UTF-8">
 function sayHello() {
-    alert("Hello world");
+alert("Hello world");
 }
 </script>
-</html>`
+</html>
+`
