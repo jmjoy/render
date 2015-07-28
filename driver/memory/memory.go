@@ -1,19 +1,21 @@
-package file
+package memory
 
 import (
 	"fmt"
 	"html/template"
 	"path/filepath"
+	"strings"
 
 	"github.com/jmjoy/render"
 )
 
-type file struct {
+type memory struct {
 	dir     string
 	commons []string
+	pool    map[string]*template.Template
 }
 
-func (this *file) Init(config interface{}) error {
+func (this *memory) Init(config interface{}) error {
 	m, ok := config.(map[string]string)
 	if !ok {
 		return fmt.Errorf("file: only support config format `map[string]string` now")
@@ -32,7 +34,7 @@ func (this *file) Init(config interface{}) error {
 	return nil
 }
 
-func (this *file) AddCommonTpl(names ...string) error {
+func (this *memory) AddCommonTpl(names ...string) error {
 	for i := range names {
 		names[i] = filepath.Join(this.dir, names[i])
 	}
@@ -40,16 +42,28 @@ func (this *file) AddCommonTpl(names ...string) error {
 	return nil
 }
 
-func (this *file) GetTemplate(names ...string) (*template.Template, error) {
+func (this *memory) GetTemplate(names ...string) (*template.Template, error) {
 	if len(names) == 0 {
 		return nil, fmt.Errorf("file: must give at least one file")
 	}
 
 	tplName := filepath.Base(names[0])
 	names = append(names, this.commons...)
-	return template.New(tplName).ParseFiles(names...)
+	seq := strings.Join(names, "%#@!!@#%")
+
+	t, ok := this.pool[seq]
+	if ok {
+		return t, nil
+	}
+
+	t, err := template.New(tplName).ParseFiles(names...)
+	if err != nil {
+		return nil, err
+	}
+	this.pool[seq] = t
+	return t, nil
 }
 
 func init() {
-	render.Resigtry("file", new(file))
+	render.Resigtry("memory", new(memory))
 }
