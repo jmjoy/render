@@ -1,17 +1,10 @@
-{{template "base" .}}
-{{define "head"}}
+{{template "base" .}}{{define "head"}}
 <link rel="stylesheet" href="hello.css" type="text/css" media="screen" charset="utf-8">
-{{end}}
-
-{{define "body"}}
+{{end}}{{define "body"}}
 <h1>Hello world!</h1>
-<p>{{.Content}}</p>
-{{end}}
-
-{{define "foot"}}
+<p>{{.Content}}</p>{{end}}{{define "foot"}}
 <script type="text/javascript" charset="UTF-8">
 function sayHello() {
     alert("Hello world");
 }
-</script>
-{{end}}
+</script>{{end}}

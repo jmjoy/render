@@ -46,6 +46,9 @@ func (this *file) GetTemplate(names ...string) (*template.Template, error) {
 	}
 
 	tplName := filepath.Base(names[0])
+	for i := range names {
+		names[i] = filepath.Join(this.dir, names[i])
+	}
 	names = append(names, this.commons...)
 	return template.New(tplName).ParseFiles(names...)
 }

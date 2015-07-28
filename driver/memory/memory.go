@@ -48,6 +48,9 @@ func (this *memory) GetTemplate(names ...string) (*template.Template, error) {
 	}
 
 	tplName := filepath.Base(names[0])
+	for i := range names {
+		names[i] = filepath.Join(this.dir, names[i])
+	}
 	names = append(names, this.commons...)
 	seq := strings.Join(names, "%#@!!@#%")
 
@@ -65,5 +68,7 @@ func (this *memory) GetTemplate(names ...string) (*template.Template, error) {
 }
 
 func init() {
-	render.Resigtry("memory", new(memory))
+	driver := new(memory)
+	driver.pool = make(map[string]*template.Template)
+	render.Resigtry("memory", driver)
 }
