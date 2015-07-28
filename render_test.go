@@ -7,8 +7,9 @@ import (
 )
 
 func TestRender(t *testing.T) {
+
 	tpl := template.Must(
-		template.New("index.html").ParseGlob("_testdata/*.html"), //ParseFiles("./_testdata/index.html", "./_testdata/base.html")
+		template.New("_testdata/index.html").ParseFiles("D:/gopath/src/github.com/jmjoy/render/_testdata/index.html", "D:/gopath/src/github.com/jmjoy/render/_testdata/base.html"),
 	)
 
 	data := map[string]string{

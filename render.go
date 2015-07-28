@@ -8,7 +8,7 @@ import (
 
 type Driver interface {
 	Init(config interface{}) error
-	AddCommonTemplate(names ...string) error
+	AddCommonTpl(names ...string) error
 	GetTemplate(names ...string) (*template.Template, error)
 }
 
