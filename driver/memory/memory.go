@@ -10,9 +10,11 @@ import (
 )
 
 type memory struct {
-	dir     string
-	commons []string
-	pool    map[string]*template.Template
+	dir        string
+	commons    []string
+	pool       map[string]*template.Template
+	leftDelim  string
+	rightDelim string
 }
 
 func (this *memory) Init(config interface{}) error {
@@ -59,12 +61,22 @@ func (this *memory) GetTemplate(names ...string) (*template.Template, error) {
 		return t, nil
 	}
 
-	t, err := template.New(tplName).ParseFiles(names...)
+	t = template.New(tplName)
+	if this.leftDelim != "" && this.rightDelim != "" {
+		t = t.Delims(this.leftDelim, this.rightDelim)
+	}
+	t, err := t.ParseFiles(names...)
+
 	if err != nil {
 		return nil, err
 	}
 	this.pool[seq] = t
 	return t, nil
+}
+
+func (this *memory) Delims(left, right string) {
+	this.leftDelim = left
+	this.rightDelim = right
 }
 
 func init() {

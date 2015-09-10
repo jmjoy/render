@@ -10,6 +10,7 @@ type Driver interface {
 	Init(config interface{}) error
 	AddCommonTpl(names ...string) error
 	GetTemplate(names ...string) (*template.Template, error)
+	Delims(left, right string)
 }
 
 func Resigtry(name string, d Driver) {

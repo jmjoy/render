@@ -9,8 +9,11 @@ import (
 )
 
 type file struct {
-	dir     string
-	commons []string
+	dir         string
+	commons     []string
+	rawTemplate *template.Template
+	leftDelim   string
+	rightDelim  string
 }
 
 func (this *file) Init(config interface{}) error {
@@ -50,7 +53,17 @@ func (this *file) GetTemplate(names ...string) (*template.Template, error) {
 		names[i] = filepath.Join(this.dir, names[i])
 	}
 	names = append(names, this.commons...)
-	return template.New(tplName).ParseFiles(names...)
+
+	t := template.New(tplName)
+	if this.leftDelim != "" && this.rightDelim != "" {
+		t = t.Delims(this.leftDelim, this.rightDelim)
+	}
+	return t.ParseFiles(names...)
+}
+
+func (this *file) Delims(left, right string) {
+	this.leftDelim = left
+	this.rightDelim = right
 }
 
 func init() {
